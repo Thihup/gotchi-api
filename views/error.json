@@ -1,0 +1,11 @@
+{
+  "error": {
+    "from": "message"
+  },
+  "status": {
+    "from": "error.status"
+  },
+  "stack": {
+    "from": "error.stack"
+  }
+}
