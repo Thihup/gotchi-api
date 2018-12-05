@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const signinRouter = require('./routes/auth/signin');
+const signupRouter = require('./routes/auth/signup');
 const userRouter = require('./routes/secured/userRouter');
 
 var app = express();
@@ -25,7 +26,13 @@ app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+    res.header("Content-Type", 'application/json');
+    next();
+});
+
 app.use('/auth/signin', signinRouter);
+app.use('/auth/signup', signupRouter);
 app.use('/secured/', verifyJWT, userRouter);
 
 // catch 404 and forward to error handler
@@ -34,7 +41,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
